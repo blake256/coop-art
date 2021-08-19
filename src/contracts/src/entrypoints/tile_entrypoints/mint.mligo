@@ -3,6 +3,7 @@ type mint_param = {
     canvasId: string;
     x: int;
     y: int;
+    l: int;
     image: string;
     owner: address;
     operator: address option;
@@ -22,7 +23,7 @@ let mint (mint_param, store : mint_param * nft_token_storage) : (operation  list
         let ledger_with_minted_token = Big_map.add token_id p.owner s.ledger in
         let ledger_and_owners_are_consistent : bool = check_ownership_is_consistent_in_ledger_and_owners (({owner=p.owner; token_id=token_id} : ownership), ledger_with_minted_token, new_owners) in
         if ledger_and_owners_are_consistent then
-            let new_tile = ({ tileId=token_id; canvasId=p.canvasId; x=p.x; y=p.y; image=p.image; isOwned=true; owner=p.owner; onSale=false ; price=(None:tez option); deadline=p.deadline; tileWidth=p.tileWidth; tileHeight=p.tileHeight }:tile) in
+            let new_tile = ({ tileId=token_id; canvasId=p.canvasId; x=p.x; y=p.y; l=p.l; image=p.image; isOwned=true; owner=p.owner; onSale=false ; price=(None:tez option); deadline=p.deadline; tileWidth=p.tileWidth; tileHeight=p.tileHeight }:tile) in
             let tiles_with_new_tile = Big_map.add token_id new_tile s.market.tiles in
             let tiles_ids_with_new_id = Set.add token_id s.market.tileIds in
             match mint_param.operator with

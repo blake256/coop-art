@@ -6,6 +6,7 @@ type tile = {
     tileHeight: nat;
     x: int;
     y: int;
+    l: int;
     image: string;
     isOwned: bool;
     owner: address;
