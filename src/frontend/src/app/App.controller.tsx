@@ -2,6 +2,7 @@ import { DAppProvider } from 'dapp/dapp'
 import { APP_NAME } from 'dapp/defaults'
 import { Admin } from 'pages/Admin/Admin.controller'
 import { Create } from 'pages/Create/Create.controller'
+import { EditLayers } from 'pages/EditLayers/EditLayers.controller'
 import { EditTiles } from 'pages/EditTiles/EditTiles.controller'
 import { Home } from 'pages/Home/Home.controller'
 import { Marketplace } from 'pages/Marketplace/Marketplace.controller'
@@ -47,6 +48,18 @@ export const App = () => {
                 </Route>
                 <Route exact path="/edit-tiles/:canvasId">
                   <EditTiles
+                    mintTransactionPending={transactionPending}
+                    setMintTransactionPendingCallback={setTransactionPending}
+                  />
+                </Route>
+                <Route exact path="/edit-layers">
+                  <EditLayers
+                    mintTransactionPending={transactionPending}
+                    setMintTransactionPendingCallback={setTransactionPending}
+                  />
+                </Route>
+                <Route exact path="/edit-layers/:canvasId">
+                  <EditLayers
                     mintTransactionPending={transactionPending}
                     setMintTransactionPendingCallback={setTransactionPending}
                   />

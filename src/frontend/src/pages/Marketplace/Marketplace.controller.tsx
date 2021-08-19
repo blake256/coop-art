@@ -44,6 +44,7 @@ export const Marketplace = ({ transactionPending }: MarketplaceProps) => {
                   canvasId: tileRaw.canvasId,
                   x: tileRaw.x.s * tileRaw.x.c[0],
                   y: tileRaw.y.s * tileRaw.y.c[0],
+                  l: tileRaw.l.s * tileRaw.l.c[0],
                   image: tileRaw.image,
                   isOwned: tileRaw.isOwned,
                   owner: tileRaw.owner,

@@ -3,21 +3,21 @@ import { Tile } from 'pages/EditTiles/EditTiles.view'
 import { Link } from 'react-router-dom'
 
 // prettier-ignore
-import { MarketplaceCanvas, MarketplaceCanvasTile, MarketplaceCanvasTileContainer, MarketplaceCanvasTileContribute, MarketplaceCanvasTileCount, MarketplaceCanvasTileExpiry, MarketplaceCanvasTiles, MarketplaceCanvasTileScaler, MarketplaceCanvasTileSold, MarketplaceContainer, MarketplaceStyled } from './Marketplace.style'
+import { MarketplaceCanvas, MarketplaceCanvasLayer, MarketplaceCanvasTile, MarketplaceCanvasTileContainer, MarketplaceCanvasTileContribute, MarketplaceCanvasTileCount, MarketplaceCanvasTileExpiry, MarketplaceCanvasTiles, MarketplaceCanvasTileScaler, MarketplaceCanvasTileSold, MarketplaceContainer, MarketplaceStyled } from './Marketplace.style'
 
 type MarketplaceViewProps = {
   tiles: Tile[]
 }
 
 export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
-  const canvasIds = [...new Set(tiles.map((tile) => tile.canvasId))]
-  console.log(canvasIds)
+  const tileCanvasIds = [...new Set(tiles.filter((tile) => tile.l === -1).map((tile) => tile.canvasId))]
+  const layerCanvasIds = [...new Set(tiles.filter((tile) => tile.l !== -1).map((tile) => tile.canvasId))]
 
   return (
     <MarketplaceStyled>
       <h1>Tile-based Canvases</h1>
       <MarketplaceContainer>
-        {canvasIds.map((canvasId) => {
+        {tileCanvasIds.map((canvasId) => {
           const tilesInCanvas = tiles.filter((tile) => tile.canvasId === canvasId)
           const deadline = tiles.filter((tile) => tile.canvasId === canvasId)[0].deadline
 
@@ -40,10 +40,12 @@ export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
 
           console.log(tilesInCanvas)
 
+          const scale = Math.min(270 / (canvasWidth * tileWidth || 1), 200 / (canvasHeight * tileHeight || 1))
+
           return (
             <MarketplaceCanvas>
               <MarketplaceCanvasTiles>
-                <MarketplaceCanvasTileScaler scale={270 / (canvasWidth * tileWidth || 1)}>
+                <MarketplaceCanvasTileScaler scale={scale}>
                   {
                     //@ts-ignore
                     Array.apply(null, { length: canvasHeight })
@@ -92,6 +94,81 @@ export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
                     <Timer deadline={deadline} />
                   </MarketplaceCanvasTileExpiry>
                   <Link to={`/edit-tiles/${canvasId}`}>
+                    <MarketplaceCanvasTileContribute>Contribute</MarketplaceCanvasTileContribute>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <MarketplaceCanvasTileExpiry>
+                    <svg>
+                      <use xlinkHref="/icons/sprites.svg#clock" />
+                    </svg>
+                    <div>Finished</div>
+                  </MarketplaceCanvasTileExpiry>
+                  <MarketplaceCanvasTileSold>Sold for 1 XTZ</MarketplaceCanvasTileSold>
+                </>
+              )}
+            </MarketplaceCanvas>
+          )
+        })}
+      </MarketplaceContainer>
+
+      <h1>Layer-based Canvases</h1>
+      <MarketplaceContainer>
+        {layerCanvasIds.map((canvasId) => {
+          const layersInCanvas = tiles.filter((tile) => tile.canvasId === canvasId)
+          const deadline = tiles.filter((tile) => tile.canvasId === canvasId)[0].deadline
+
+          const canvasWidth = layersInCanvas[0].tileWidth
+          const canvasHeight = layersInCanvas[0].tileHeight
+
+          const lMax = layersInCanvas
+            .map((tile) => tile.l)
+            .reduce((result, currentValue) => Math.max(result, currentValue))
+
+          console.log(layersInCanvas)
+
+          const scale = Math.min(270 / (canvasWidth || 1), 200 / (canvasHeight || 1))
+
+          return (
+            <MarketplaceCanvas>
+              <MarketplaceCanvasTiles>
+                <MarketplaceCanvasTileScaler scale={scale}>
+                  {
+                    //@ts-ignore
+                    Array.apply(null, { length: lMax + 1 })
+                      .map(function (_, idx) {
+                        return idx
+                      })
+                      .map((l) => (
+                        <MarketplaceCanvasLayer key={`l${l}`} layer={l} width={canvasWidth} height={canvasHeight}>
+                          {layersInCanvas.filter((tile) => tile.l === l).length > 0 && (
+                            <img
+                              alt="tile"
+                              src={layersInCanvas.filter((tile) => tile.l === l).map((tile) => tile.image)[0]}
+                            />
+                          )}
+                        </MarketplaceCanvasLayer>
+                      ))
+                  }
+                </MarketplaceCanvasTileScaler>
+              </MarketplaceCanvasTiles>
+              <MarketplaceCanvasTileCount>
+                <svg>
+                  <use xlinkHref="/icons/sprites.svg#tilesborder" />
+                </svg>
+                <div>{`${tiles.filter((tile) => tile.canvasId === canvasId).length} layers`}</div>
+              </MarketplaceCanvasTileCount>
+
+              {new Date(deadline).getTime() - new Date().getTime() > 0 ? (
+                <>
+                  <MarketplaceCanvasTileExpiry>
+                    <svg>
+                      <use xlinkHref="/icons/sprites.svg#clock" />
+                    </svg>
+                    <Timer deadline={deadline} />
+                  </MarketplaceCanvasTileExpiry>
+                  <Link to={`/edit-layers/${canvasId}`}>
                     <MarketplaceCanvasTileContribute>Contribute</MarketplaceCanvasTileContribute>
                   </Link>
                 </>

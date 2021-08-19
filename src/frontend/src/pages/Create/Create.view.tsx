@@ -33,7 +33,9 @@ export const CreateView = () => {
           <svg>
             <use xlinkHref="/icons/sprites.svg#layers" />
           </svg>
-          <Button color="primary" text="Coming soon..." />
+          <Link to="/edit-layers">
+            <Button color="secondary" text="Get started" />
+          </Link>
         </CreateGridCell>
       </CreateGrid>
     </CreateStyled>

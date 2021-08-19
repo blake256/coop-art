@@ -26,6 +26,7 @@ export type Tile = {
   canvasId: string
   x: number
   y: number
+  l: number
   image: string
   isOwned?: boolean
   owner?: string
@@ -116,6 +117,7 @@ export const EditTilesView = ({
         canvasId: canvasId as string,
         x,
         y,
+        l: -1,
         image,
         owner: connectedUser,
         deadline,

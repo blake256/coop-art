@@ -118,3 +118,17 @@ export const MarketplaceCanvasTile = styled.div<{ width: number; height: number 
     height: ${({ height }) => height}px;
   }
 `
+
+export const MarketplaceCanvasLayer = styled.div<{ layer: number; width: number; height: number }>`
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  > img {
+    width: ${({ width }) => width}px;
+    height: ${({ height }) => height}px;
+  }
+`

@@ -1,32 +1,20 @@
 // prettier-ignore
 import { useAccountPkh, useOnBlock, useReady, useTezos, useWallet } from "dapp/dapp";
 import { ADMIN, COOPART_ADDRESS } from 'dapp/defaults'
+import { Mint } from 'pages/EditTiles/EditTiles.controller'
+import { Tile } from 'pages/EditTiles/EditTiles.view'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { Message, Page } from 'styles'
+import { EditLayersView } from './EditLayers.view'
 
-import { EditTilesView, Tile } from './EditTiles.view'
-
-export type Mint = {
-  tileId: number
-  canvasId: string
-  x: number
-  y: number
-  l: number
-  image: string
-  owner?: string
-  deadline: string
-  tileWidth: number
-  tileHeight: number
-}
-
-type EditTilesProps = {
+type EditLayersProps = {
   setMintTransactionPendingCallback: (b: boolean) => void
   mintTransactionPending: boolean
 }
 
-export const EditTiles = ({ setMintTransactionPendingCallback, mintTransactionPending }: EditTilesProps) => {
+export const EditLayers = ({ setMintTransactionPendingCallback, mintTransactionPending }: EditLayersProps) => {
   const wallet = useWallet()
   const ready = useReady()
   const tezos = useTezos()
@@ -75,7 +63,7 @@ export const EditTiles = ({ setMintTransactionPendingCallback, mintTransactionPe
         setLoadingTiles(false)
       }
       // setExistingTokenIds(storage['market'].tileIds.map((tileIdAsObject: { c: any[] }) => tileIdAsObject.c[0]))
-      // setEditTilesAdress(storage.market.admin)
+      // setEditLayersAdress(storage.market.admin)
     }
   }, [canvasId, contract])
 
@@ -108,7 +96,7 @@ export const EditTiles = ({ setMintTransactionPendingCallback, mintTransactionPe
       {wallet ? (
         <>
           {ready ? (
-            <EditTilesView
+            <EditLayersView
               loadingTiles={loadingTiles}
               mintCallback={mintCallback}
               connectedUser={(accountPkh as unknown) as string}
