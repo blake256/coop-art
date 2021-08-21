@@ -4,12 +4,20 @@
 #include "marketplace_definition.mligo"
 #include "../tzip-12/lib/fa2_operator_lib.mligo"
 
+type canvas_id = string
+
 type marketplace_storage = {
   admin: address;
   sales: sale set;
   tiles: tiles;
   tileIds: token_id set;
   owners: owners;
+  upvotes: (token_id, address) big_map;
+  downvotes: (token_id, address) big_map;
+  // canvasIds: canvas_id set;
+  // canvasIdToTileIds: (canvas_id, tile_id) big_map;
+  // canvasIdToContributorAddresses: (canvas_id, address) big_map;
+
 }
 
 type ledger = (token_id, address) big_map

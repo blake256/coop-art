@@ -10,6 +10,8 @@ const empty_tile_ids = []
 const empty_owners = new MichelsonMap()
 const tiles_grid_height = 10
 const tiles_grid_width = 10
+const empty_upvotes = new MichelsonMap();
+const empty_downvotes = new MichelsonMap();
 
 const market = {
     "tiles": empty_tiles,
@@ -18,7 +20,9 @@ const market = {
     "height": tiles_grid_height,
     "width": tiles_grid_width,
     "sales": empty_sales,
-    "owners": empty_owners
+    "owners": empty_owners,
+    "upvotes": empty_upvotes,
+    "downvotes": empty_downvotes,
 }
 
 const metadata = new MichelsonMap();

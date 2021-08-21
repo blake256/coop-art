@@ -12,6 +12,8 @@
 type nft_entry_points =
     | Fa2 of fa2_entry_points
     | Mint of mint_param
+    | Upvote of upvote_param
+    | Downvote of downvote_param
     | UpdateMetadata of string
     | SellTile of sell_param
     | BuyTile of buy_param
@@ -29,6 +31,8 @@ let main (param, storage : nft_entry_points * nft_token_storage)
     match param with
     | Fa2 fa2 -> fa2_main (fa2, storage)
     | Mint p -> mint(p, storage)
+    | Upvote p -> upvote(p, storage)
+    | Downvote p -> downvote(p, storage)
     | UpdateMetadata p -> updateMetadata(p, storage)
     | SellTile p -> sell(p, storage)
     | BuyTile p -> buy(p, storage)

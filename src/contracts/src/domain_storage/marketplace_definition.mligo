@@ -12,18 +12,13 @@ type tile = {
     owner: address;
     onSale: bool;
     price: tez option;
+    // upvotes: address set;
+    // downvotes: address set;
 }
 
 type sale = {
     token_id: token_id;
     price: tez;
-}
-
-type canvas = {
-    canvasId: string;
-    deadline: timestamp;
-    tileWidth: nat;
-    tileHeight: nat;
 }
 
 type tiles = (nat, tile) big_map

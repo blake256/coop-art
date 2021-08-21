@@ -3,7 +3,7 @@ import { Input } from 'app/App.components/Input/Input.controller'
 import { create } from 'ipfs-http-client'
 import { useEffect, useState } from 'react'
 import { useAlert } from 'react-alert'
-import { Mint } from './EditTiles.controller'
+import { Mint, Vote } from './EditTiles.controller'
 import dayjs from 'dayjs'
 
 // prettier-ignore
@@ -14,6 +14,7 @@ const client = create({ url: 'https://ipfs.infura.io:5001/api/v0' })
 type EditTilesViewProps = {
   loadingTiles: boolean
   mintCallback: (mintProps: Mint) => Promise<any>
+  voteCallback: (voteProps: Vote) => Promise<any>
   setMintTransactionPendingCallback: (b: boolean) => void
   connectedUser: string
   mintTransactionPending: boolean
@@ -40,6 +41,7 @@ export type Tile = {
 export const EditTilesView = ({
   loadingTiles,
   mintCallback,
+  voteCallback,
   connectedUser,
   existingTiles,
   setMintTransactionPendingCallback,
@@ -102,6 +104,32 @@ export const EditTilesView = ({
     }
   }, [tiles])
 
+  async function handleVote(tileId: number, up: boolean) {
+    if (mintTransactionPending) {
+      alert.info('Cannot vote on a tile while a transaction is pending...', { timeout: 10000 })
+    } else {
+      console.log(tileId, up)
+      voteCallback({ tileId, up })
+        .then((e) => {
+          setMintTransactionPendingCallback(true)
+          alert.info('Voting on tile...')
+          e.confirmation().then((e: any) => {
+            alert.success('Vote casted', {
+              onOpen: () => {
+                setMintTransactionPendingCallback(false)
+              },
+            })
+            return e
+          })
+          return e
+        })
+        .catch((e: any) => {
+          alert.show(e.message)
+          console.error(e)
+        })
+    }
+  }
+
   async function handleUpload(file: any, x: number, y: number) {
     const tileId = Math.floor(Math.random() * 1000000) //TODO: Implement better tileId
 
@@ -130,7 +158,7 @@ export const EditTilesView = ({
 
       // Mint token
       if (mintTransactionPending) {
-        alert.info('Cannot mint a new land while the previous one is not minted...', { timeout: 10000 })
+        alert.info('Cannot mint a new tile while a transaction is pending...', { timeout: 10000 })
       } else {
         console.log(tile)
         mintCallback(tile)
@@ -260,12 +288,12 @@ export const EditTilesView = ({
                                   <img
                                     alt="check"
                                     src="/icons/check.svg"
-                                    onClick={() => alert.info('This feature is coming soon in phase II.')}
+                                    onClick={() => handleVote(tilesThere.map((tile) => tile.tileId)[0], true)}
                                   />
                                   <img
                                     alt="cross"
                                     src="/icons/cross.svg"
-                                    onClick={() => alert.info('This feature is coming soon in phase II.')}
+                                    onClick={() => handleVote(tilesThere.map((tile) => tile.tileId)[0], false)}
                                   />
                                 </TileVotingButtons>
                               </TileVoting>

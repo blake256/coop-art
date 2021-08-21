@@ -1,7 +1,7 @@
 // prettier-ignore
 import { useAccountPkh, useOnBlock, useReady, useTezos, useWallet } from "dapp/dapp";
 import { ADMIN, COOPART_ADDRESS } from 'dapp/defaults'
-import { Mint } from 'pages/EditTiles/EditTiles.controller'
+import { Mint, Vote } from 'pages/EditTiles/EditTiles.controller'
 import { Tile } from 'pages/EditTiles/EditTiles.view'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
@@ -82,6 +82,14 @@ export const EditLayers = ({ setMintTransactionPendingCallback, mintTransactionP
 
   useOnBlock(tezos, loadStorage)
 
+  const voteCallback = React.useCallback(
+    ({ tileId, up }: Vote) => {
+      if (up) return (contract as any).methods.upvote(tileId).send()
+      else return (contract as any).methods.downvote(tileId).send()
+    },
+    [contract],
+  )
+
   const mintCallback = React.useCallback(
     ({ tileId, canvasId, x, y, l, image, owner, deadline, tileWidth, tileHeight }: Mint) => {
       return (contract as any).methods
@@ -98,6 +106,7 @@ export const EditLayers = ({ setMintTransactionPendingCallback, mintTransactionP
           {ready ? (
             <EditLayersView
               loadingTiles={loadingTiles}
+              voteCallback={voteCallback}
               mintCallback={mintCallback}
               connectedUser={(accountPkh as unknown) as string}
               existingTiles={existingTiles}

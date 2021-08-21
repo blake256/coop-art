@@ -21,6 +21,11 @@ export type Mint = {
   tileHeight: number
 }
 
+export type Vote = {
+  tileId: number
+  up: boolean
+}
+
 type EditTilesProps = {
   setMintTransactionPendingCallback: (b: boolean) => void
   mintTransactionPending: boolean
@@ -94,6 +99,14 @@ export const EditTiles = ({ setMintTransactionPendingCallback, mintTransactionPe
 
   useOnBlock(tezos, loadStorage)
 
+  const voteCallback = React.useCallback(
+    ({ tileId, up }: Vote) => {
+      if (up) return (contract as any).methods.upvote(tileId).send()
+      else return (contract as any).methods.downvote(tileId).send()
+    },
+    [contract],
+  )
+
   const mintCallback = React.useCallback(
     ({ tileId, canvasId, x, y, l, image, owner, deadline, tileWidth, tileHeight }: Mint) => {
       return (contract as any).methods
@@ -111,6 +124,7 @@ export const EditTiles = ({ setMintTransactionPendingCallback, mintTransactionPe
             <EditTilesView
               loadingTiles={loadingTiles}
               mintCallback={mintCallback}
+              voteCallback={voteCallback}
               connectedUser={(accountPkh as unknown) as string}
               existingTiles={existingTiles}
               setMintTransactionPendingCallback={setMintTransactionPendingCallback}

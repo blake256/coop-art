@@ -5,8 +5,6 @@ type storage =
   | State of balance_of_response list
   | Empty
 
-
-
 type query_param = {
   fa2 : address;
   requests : balance_of_request_michelson list;
