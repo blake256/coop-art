@@ -1,3 +1,7 @@
+## Video : https://youtu.be/
+
+## Demo : https://coopart.io
+
 ## About Coopart
 
 **Coopart** [ koh-op-ahrt ] is the first-ever cooperative NFT art marketplace. 
@@ -62,7 +66,7 @@ Coopart is a revolutionary way of building NFT art cooperatively. Both tile-base
 3- People can vote tiles in or out. Each canvas is its own DAO and self-governs. Some tiles are voted out and some tiles are voted in to replace them.
 4- Canvas is sold and profits distributed to all its contributors.
 
-Hi, I'm Aymeric, I first got the idea for Coopart from looking at the 69 million Beeple's NFT. The piece of art is made from 5,000 tiles merged together into a common canvas. I thought it would be great if each tile was made by a different author, and so Coopart was born. 
+I first got the idea for Coopart from looking at the 69 million Beeple's NFT. The piece of art is made from 5,000 tiles merged together into a common canvas. I thought it would be great if each tile was made by a different author, and so Coopart was born. 
 
 Let's try it out. Go to coopart.io and and connect your Temple wallet. Make sure your wallet is connected to the _Florence Testnet_. Once you are connected, your Tez address should then appear on the top right corner.
 
