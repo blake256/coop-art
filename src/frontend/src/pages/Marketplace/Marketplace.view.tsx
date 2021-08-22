@@ -1,17 +1,39 @@
 import { Timer } from 'app/App.components/Timer/Timer.controller'
 import { Tile } from 'pages/EditTiles/EditTiles.view'
+import { useAlert } from 'react-alert'
 import { Link } from 'react-router-dom'
+import { Buy } from './Marketplace.controller'
 
 // prettier-ignore
 import { MarketplaceCanvas, MarketplaceCanvasLayer, MarketplaceCanvasTile, MarketplaceCanvasTileContainer, MarketplaceCanvasTileContribute, MarketplaceCanvasTileCount, MarketplaceCanvasTileExpiry, MarketplaceCanvasTiles, MarketplaceCanvasTileScaler, MarketplaceCanvasTileSold, MarketplaceContainer, MarketplaceStyled } from './Marketplace.style'
 
 type MarketplaceViewProps = {
   tiles: Tile[]
+  buyCallback: (buyProps: Buy) => Promise<any>
 }
 
-export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
+export const MarketplaceView = ({ tiles, buyCallback }: MarketplaceViewProps) => {
+  const alert = useAlert()
+
   const tileCanvasIds = [...new Set(tiles.filter((tile) => tile.l === -1).map((tile) => tile.canvasId))]
   const layerCanvasIds = [...new Set(tiles.filter((tile) => tile.l !== -1).map((tile) => tile.canvasId))]
+
+  async function handleBuy(tileId: number, price: number) {
+    buyCallback({ tileId, price })
+      .then((e) => {
+        alert.info('Buying canvas...')
+        e.wait().then((e: any) => {
+          console.log('Canvas purchased')
+          alert.success('Canvas purchased')
+          return e
+        })
+        return e
+      })
+      .catch((e: any) => {
+        alert.show(e.message)
+        console.error(e)
+      })
+  }
 
   return (
     <MarketplaceStyled>
@@ -105,7 +127,9 @@ export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
                     </svg>
                     <div>Finished</div>
                   </MarketplaceCanvasTileExpiry>
-                  <MarketplaceCanvasTileSold>Sold for 1 XTZ</MarketplaceCanvasTileSold>
+                  <MarketplaceCanvasTileContribute onClick={() => handleBuy(tilesInCanvas[0].tileId, 100)}>
+                    Buy for 100 Tez
+                  </MarketplaceCanvasTileContribute>
                 </>
               )}
             </MarketplaceCanvas>
@@ -180,7 +204,9 @@ export const MarketplaceView = ({ tiles }: MarketplaceViewProps) => {
                     </svg>
                     <div>Finished</div>
                   </MarketplaceCanvasTileExpiry>
-                  <MarketplaceCanvasTileSold>Sold for 1 XTZ</MarketplaceCanvasTileSold>
+                  <MarketplaceCanvasTileContribute onClick={() => handleBuy(layersInCanvas[0].tileId, 100)}>
+                    Buy for 100 Tez
+                  </MarketplaceCanvasTileContribute>
                 </>
               )}
             </MarketplaceCanvas>

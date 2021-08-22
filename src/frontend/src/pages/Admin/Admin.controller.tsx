@@ -47,9 +47,9 @@ export const Admin = ({ setMintTransactionPendingCallback, mintTransactionPendin
     // prettier-ignore
     const batch = await (tezos as any).wallet
       .batch()
-      .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse1.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 0, 0))
-      .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse2.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 1, 0))
-      .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse4.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 2, 0))
+      // .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse1.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 0, 0))
+      // .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse2.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 1, 0))
+      // .withContractCall((ctr as any).methods.mint('horse', '2021-08-10t00:00:00Z', 'https://coopart.io/examples/horse4.png', -1, ADMIN, ADMIN, 340, Math.floor(Math.random() * 1000000), 130, 2, 0))
       
       .withContractCall((ctr as any).methods.mint('rage', '2021-09-25t10:10:10Z', 'https://coopart.io/examples/rage1.png', -1, ADMIN, ADMIN, 100, Math.floor(Math.random() * 1000000), 100, 0, 0))
       .withContractCall((ctr as any).methods.mint('rage', '2021-09-25t10:10:10Z', 'https://coopart.io/examples/rage2.png', -1, ADMIN, ADMIN, 100, Math.floor(Math.random() * 1000000), 100, 1, 0))
@@ -71,7 +71,7 @@ export const Admin = ({ setMintTransactionPendingCallback, mintTransactionPendin
       .withContractCall((ctr as any).methods.mint('miami', '2021-09-15t00:00:00Z', 'https://ipfs.infura.io/ipfs/QmQa8dhMaTpZwoJbtUExAAHDySfxMYaP4ph5abj3jUidpR', 1, ADMIN, ADMIN, 562, Math.floor(Math.random() * 1000000), 1000, -1, -1))
       .withContractCall((ctr as any).methods.mint('miami', '2021-09-15t00:00:00Z', 'https://ipfs.infura.io/ipfs/QmX4z3m5AuMM1C6CfU1fXu3cRsygEe7bUUUpGBAgexBKY6', 2, ADMIN, ADMIN, 562, Math.floor(Math.random() * 1000000), 1000, -1, -1))
       .withContractCall((ctr as any).methods.mint('miami', '2021-09-15t00:00:00Z', 'https://ipfs.infura.io/ipfs/QmPV9ybZndnywsrgFWq8qwCj4UbVYMVQko1oCxvijrNBbF', 3, ADMIN, ADMIN, 562, Math.floor(Math.random() * 1000000), 1000, -1, -1))
-      .withContractCall((ctr as any).methods.mint('miami', '2021-09-15t00:00:00Z', 'https://ipfs.infura.io/ipfs/QmRXGq59ysX9tbr7JeQcUAo9CR1SHS8Y3Yatmo5EGSs2yY', 4, ADMIN, ADMIN, 562, Math.floor(Math.random() * 1000000), 1000, -1, -1))
+    //.withContractCall((ctr as any).methods.mint('miami', '2021-09-15t00:00:00Z', 'https://ipfs.infura.io/ipfs/QmRXGq59ysX9tbr7JeQcUAo9CR1SHS8Y3Yatmo5EGSs2yY', 4, ADMIN, ADMIN, 562, Math.floor(Math.random() * 1000000), 1000, -1, -1))
 
     const batchOp = await batch.send()
     console.log(batchOp)

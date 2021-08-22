@@ -1,14 +1,20 @@
 import { COOPART_ADDRESS, NETWORK } from 'dapp/defaults'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Message, Page } from 'styles'
 import { TezosToolkit } from '@taquito/taquito'
 import { MarketplaceView } from './Marketplace.view'
 import { Tile } from 'pages/EditTiles/EditTiles.view'
 import { Loader } from 'app/App.components/Loader/Loader.view'
+import { useOnBlock, useTezos } from 'dapp/dapp'
 
 type MarketplaceProps = {
   setTransactionPendingCallback: (b: boolean) => void
   transactionPending: boolean
+}
+
+export type Buy = {
+  tileId: number
+  price: number
 }
 
 export const Marketplace = ({ transactionPending }: MarketplaceProps) => {
@@ -17,6 +23,9 @@ export const Marketplace = ({ transactionPending }: MarketplaceProps) => {
   const [contractTaquito, setContractTaquito] = useState(undefined)
   const [tiles, setTiles] = useState<Tile[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+
+  const tezos = useTezos()
+  const [contract, setContract] = useState(undefined)
 
   useEffect(() => {
     ;(async () => {
@@ -65,12 +74,40 @@ export const Marketplace = ({ transactionPending }: MarketplaceProps) => {
     })()
   }, [contractTaquito])
 
+  // const loadStorage = useCallback(async () => {
+  //   if (contract) {
+  //     await (contract as any).storage()
+  //   }
+  // }, [contract])
+
+  // useEffect(() => {
+  //   loadStorage()
+  // }, [loadStorage])
+
   // useOnBlock(tezos, loadStorage)
+
+  useEffect(() => {
+    ;(async () => {
+      console.log('tezos', tezos)
+      if (tezos) {
+        const ctr = await (tezos as any).wallet.at(COOPART_ADDRESS)
+        console.log('ctr', ctr)
+        setContract(ctr)
+      }
+    })()
+  }, [tezos, transactionPending])
+
+  const buyCallback = useCallback(
+    ({ tileId, price }: Buy) => {
+      return (contract as any).methods.buyTile(tileId, price).send({ amount: price })
+    },
+    [contract],
+  )
 
   return (
     <Page>
       {tiles && tiles.length > 0 ? (
-        <MarketplaceView tiles={tiles} />
+        <MarketplaceView tiles={tiles} buyCallback={buyCallback} />
       ) : (
         <div>
           {loading ? (
